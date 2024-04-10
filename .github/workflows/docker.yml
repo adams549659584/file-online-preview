@@ -10,29 +10,16 @@ defaults:
     shell: bash
 
 jobs:
-  mvn-build:
-    runs-on: ubuntu-22.04
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 8
-      uses: actions/setup-java@v2
-      with:
-        java-version: '8'
-        distribution: 'adopt'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-
   docker-vars-init:
     runs-on: ubuntu-22.04
-    env:
-      GITHUB_TAG: ${{ github.ref_name }}
     outputs:
       docker_tag: ${{ steps.pure_tag.outputs.docker_tag }}
     steps:
     - name: Remove 'v' from tag
       id: pure_tag
-      run: echo "docker_tag=${{ env.GITHUB_TAG }}" >> $GITHUB_OUTPUT
+      run: |
+        docker_tag=${{ github.ref_name }}
+        echo "docker_tag=${docker_tag#v}" >> $GITHUB_OUTPUT
 
   kkfileview-jdk-docker-build:
     needs: [docker-vars-init]
@@ -42,7 +29,7 @@ jobs:
     steps:
     - name: Checkout source
       uses: actions/checkout@v4
-          
+
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
 

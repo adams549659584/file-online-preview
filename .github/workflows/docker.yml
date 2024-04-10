@@ -23,9 +23,20 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-  kkfileview-jdk-docker-build:
-    needs: mvn-build
+  docker-vars-init:
     runs-on: ubuntu-22.04
+    outputs:
+      docker_tag: ${{ steps.pure_tag.outputs.docker_tag }}
+    steps:
+    - name: Remove 'v' from tag
+      id: pure_tag
+      run: echo "docker_tag=${{ github.ref_name#v }}" >> $GITHUB_OUTPUT
+
+  kkfileview-jdk-docker-build:
+    needs: [mvn-build, docker-vars-init]
+    runs-on: ubuntu-22.04
+    env:
+        DOCKER_TAG: ${{ needs.docker-vars-init.outputs.docker_tag }}
     steps:
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -39,7 +50,7 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
     
-    - name: Build and Push docker image for kkfileview-jdk:${{ github.ref_name }} to dockerhub
+    - name: Build and Push docker image for kkfileview-jdk:${{ env.DOCKER_TAG }} to dockerhub
       uses: docker/build-push-action@v5
       with:
         context: ./docker/kkfileview-jdk
@@ -47,14 +58,16 @@ jobs:
         platforms: linux/arm64
         push: true
         tags: |
-            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/kkfileview-jdk:${{ github.ref_name }}
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/kkfileview-jdk:${{ env.DOCKER_TAG }}
             docker.io/${{ secrets.DOCKERHUB_USERNAME }}/kkfileview-jdk:latest
         cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/kkfileview-jdk:cache
         cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/kkfileview-jdk:cache,mode=max
 
   kkfileview-docker-build:
-    needs: kkfileview-jdk-docker-build
+    needs: [docker-vars-init, kkfileview-jdk-docker-build]
     runs-on: ubuntu-22.04
+    env:
+        DOCKER_TAG: ${{ needs.docker-vars-init.outputs.docker_tag }}
     steps:
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -68,7 +81,7 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
     
-    - name: Build and Push docker image for kkfileview:${{ github.ref_name }} to dockerhub
+    - name: Build and Push docker image for kkfileview:${{ env.DOCKER_TAG }} to dockerhub
       uses: docker/build-push-action@v5
       with:
         context: .
@@ -76,7 +89,7 @@ jobs:
         platforms: linux/arm64
         push: true
         tags: |
-            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/kkfileview:${{ github.ref_name }}
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/kkfileview:${{ env.DOCKER_TAG }}
             docker.io/${{ secrets.DOCKERHUB_USERNAME }}/kkfileview:latest
         cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/kkfileview:cache
         cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/kkfileview:cache,mode=max

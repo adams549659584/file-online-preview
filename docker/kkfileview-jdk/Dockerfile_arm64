@@ -31,7 +31,7 @@ RUN git submodule init &&\
     git config --unset-all submodule.dictionaries.url &&\
     git config --unset-all submodule.helpcontent2.active &&\
     git config --unset-all submodule.helpcontent2.url &&\
-    git submodule update --progress --depth=1 &&\
+    git submodule update --progress --depth=1
     # 下载第三方依赖
 #     mkdir -p /opt/libreoffice/ext &&\
 #     wget --recursive --no-parent --no-check-certificate -P /opt/libreoffice/ext https://go.suokunlong.cn:88/dl/libreoffice/external_tarballs/ 

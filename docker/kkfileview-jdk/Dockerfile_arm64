@@ -3,8 +3,8 @@ MAINTAINER chenjh "842761733@qq.com"
 # 内置一些常用的中文字体，避免普遍性乱码
 COPY fonts/* /usr/share/fonts/chinese/
 RUN apt-get clean && apt-get update &&\
-	sed -i 's/http:\/\/archive.ubuntu.com/https:\/\/mirrors.aliyun.com/g' /etc/apt/sources.list &&\
-	sed -i 's/# deb/deb/g' /etc/apt/sources.list &&\
+	# sed -i 's/http:\/\/archive.ubuntu.com/https:\/\/mirrors.aliyun.com/g' /etc/apt/sources.list &&\
+	# sed -i 's/# deb/deb/g' /etc/apt/sources.list &&\
 	apt-get install -y --reinstall ca-certificates &&\
 	apt-get clean && apt-get update &&\
 	apt-get install -y locales language-pack-zh-hans &&\
@@ -33,9 +33,9 @@ RUN git submodule init &&\
     git config --unset-all submodule.helpcontent2.url &&\
     git submodule update --progress --depth=1 &&\
     # 下载第三方依赖
-    mkdir -p /opt/libreoffice/ext &&\
-    wget --recursive --no-parent --no-check-certificate -P /opt/libreoffice/ext https://go.suokunlong.cn:88/dl/libreoffice/external_tarballs/ 
-RUN mv /opt/libreoffice/ext/go.suokunlong.cn:88/dl/libreoffice/external_tarballs/* /opt/libreoffice/ext
+#     mkdir -p /opt/libreoffice/ext &&\
+#     wget --recursive --no-parent --no-check-certificate -P /opt/libreoffice/ext https://go.suokunlong.cn:88/dl/libreoffice/external_tarballs/ 
+# RUN mv /opt/libreoffice/ext/go.suokunlong.cn:88/dl/libreoffice/external_tarballs/* /opt/libreoffice/ext
     # 配置编译选项
 RUN cat << EOF > autogen.input \
     && echo "--without-help" >> autogen.input \

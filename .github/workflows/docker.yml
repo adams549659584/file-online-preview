@@ -32,7 +32,7 @@ jobs:
     steps:
     - name: Remove 'v' from tag
       id: pure_tag
-      run: echo "docker_tag=${{ env.GITHUB_TAG }}" >> $GITHUB_OUTPUT
+      run: echo "docker_tag=${{ env.GITHUB_TAG#v }}" >> $GITHUB_OUTPUT
 
   kkfileview-jdk-docker-build:
     needs: [mvn-build, docker-vars-init]

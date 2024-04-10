@@ -23,7 +23,7 @@ RUN apt-get install -y git build-essential zip ccache junit4 libkrb5-dev nasm gr
     # clone主代码
     mkdir /opt/libreoffice
 WORKDIR /opt/libreoffice
-RUN git clone --depth=1 --branch libreoffice-7-5 git://go.suokunlong.cn/lo/core ./libreoffice-7-5
+RUN git clone --depth=1 --branch libreoffice-7-5 https://git.libreoffice.org/core ./libreoffice-7-5
     # 配置&抓取子模块
 WORKDIR /opt/libreoffice/libreoffice-7-5
 RUN git submodule init &&\

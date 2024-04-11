@@ -69,9 +69,17 @@ RUN make &&\
 
 RUN ln -s /usr/local/lib/libreoffice/program/soffice /usr/bin/libreoffice
 
+# 清除所有缓存
+RUN ccache -C && \
+    apt-get clean && \
+    apt-get autoremove --purge && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/* && \
+    rm -rf /var/tmp/*
+
 # 最终镜像
-FROM base-jdk as final
-COPY --from=base-libreoffice /usr/bin/libreoffice /usr/bin/libreoffice
+# FROM base-jdk as final
+# COPY --from=base-libreoffice /usr/bin/libreoffice /usr/bin/libreoffice
 RUN cd /usr/share/fonts/chinese &&\
     mkfontscale &&\
     mkfontdir &&\

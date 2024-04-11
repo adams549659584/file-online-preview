@@ -70,10 +70,10 @@ RUN ln -s /usr/local/lib/libreoffice/program/soffice /usr/bin/libreoffice
 
 FROM base-jdk as final
 COPY --from=base-libreoffice /usr/bin/libreoffice /usr/bin/libreoffice
-cd /usr/share/fonts/chinese &&\
-mkfontscale &&\
-mkfontdir &&\
-fc-cache -fv
+RUN cd /usr/share/fonts/chinese &&\
+    mkfontscale &&\
+    mkfontdir &&\
+    fc-cache -fv
 ENV LANG zh_CN.UTF-8
 ENV LC_ALL zh_CN.UTF-8
 CMD ["/bin/bash"]

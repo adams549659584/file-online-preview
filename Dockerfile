@@ -1,4 +1,4 @@
-FROM keking/kkfileview-jdk:latest
+FROM adams549659584/kkfileview-jdk:latest
 MAINTAINER chenjh "842761733@qq.com"
 ADD server/target/kkFileView-*.tar.gz /opt/
 ENV KKFILEVIEW_BIN_FOLDER /opt/kkFileView-4.4.0-SNAPSHOT/bin

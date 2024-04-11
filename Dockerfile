@@ -5,6 +5,7 @@ WORKDIR /app
 COPY . .
 # 使用 Maven 打包应用
 RUN mvn -B package --file pom.xml
+RUN mkdir -p opt
 ADD server/target/kkFileView-*.tar.gz opt/
 
 FROM adams549659584/kkfileview-jdk:latest

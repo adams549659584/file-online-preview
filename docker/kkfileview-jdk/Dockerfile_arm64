@@ -52,7 +52,9 @@ RUN cat << EOF > autogen.input \
     && echo "--without-java" >> autogen.input \
     && echo "--enable-firebird-sdbc" >> autogen.input \
     && echo "--without-system-firebird" >> autogen.input \
-    && echo "--enable-python=internal" >> autogen.input
+    && echo "--enable-python=internal" >> autogen.input \
+    && echo "--with-package-format=deb" >> autogen.input \
+    && echo "--enable-epm" >> autogen.input
     # 预编译
 RUN ./autogen.sh
     # 因为libreoffice的安全策略，不允许root用户执行编译操作（可以改Makefile文件解决），所以新建用户
@@ -87,3 +89,11 @@ RUN cd /usr/share/fonts/chinese &&\
 ENV LANG zh_CN.UTF-8
 ENV LC_ALL zh_CN.UTF-8
 CMD ["/bin/bash"]
+
+
+# docker buildx build --pull --rm --platform linux/arm64 -t adams549659584/kkfileview-jdk:4.3.0 -f Dockerfile_arm64 --output type=image .
+# docker tag adams549659584/kkfileview-jdk:4.3.0 adams549659584/kkfileview-jdk:latest
+# docker push adams549659584/kkfileview-jdk:4.3.0
+# docker push adams549659584/kkfileview-jdk:latest
+# docker run -it adams549659584/kkfileview-jdk:latest /bin/bash
+# ./workdir/installation/

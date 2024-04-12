@@ -56,7 +56,7 @@ jobs:
         cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/kkfileview-jdk:cache,mode=max        
 
   kkfileview-docker-build:
-    needs: [docker-vars-init]
+    needs: [docker-vars-init, kkfileview-jdk-docker-build]
     runs-on: ubuntu-22.04
     env:
         DOCKER_TAG: ${{ needs.docker-vars-init.outputs.docker_tag }}

@@ -97,3 +97,7 @@ CMD ["/bin/bash"]
 # docker push adams549659584/kkfileview-jdk:latest
 # docker run -it adams549659584/kkfileview-jdk:latest /bin/bash
 # ./workdir/installation/
+# 创建一个 “Created” 状态的容器，并没有运行，不run，就更能保证容器中文件的原始性
+# docker container create --name kkfileview-jdk adams549659584/kkfileview-jdk:4.3.0
+# docker container cp kkfileview-jdk:/opt/libreoffice/libreoffice-7-5/workdir/installation/ installation/
+# find installation/ -type f -iname "*.deb" -exec cp {} debs/ \;

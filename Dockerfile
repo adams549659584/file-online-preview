@@ -50,8 +50,8 @@ RUN mkdir -p opt && \
 
 FROM kkfileview-jdk
 COPY --from=build /app/opt /opt
-ENV KKFILEVIEW_BIN_FOLDER /opt/kkFileView-4.4.0-SNAPSHOT/bin
-ENTRYPOINT ["java","-Dfile.encoding=UTF-8","-Dspring.config.location=/opt/kkFileView-4.4.0-SNAPSHOT/config/application.properties","-jar","/opt/kkFileView-4.4.0-SNAPSHOT/bin/kkFileView-4.4.0-SNAPSHOT.jar"]
+ENV KKFILEVIEW_BIN_FOLDER /opt/kkFileView-4.4.0-beta/bin
+ENTRYPOINT ["java","-Dfile.encoding=UTF-8","-Dspring.config.location=/opt/kkFileView-4.4.0-beta/config/application.properties","-jar","/opt/kkFileView-4.4.0-beta/bin/kkFileView-4.4.0-beta.jar"]
 
 # docker buildx build --pull --rm --platform linux/amd64,linux/arm64 -t adams549659584/kkfileview:4.3.0 -f Dockerfile --output type=image .
 # docker tag adams549659584/kkfileview:4.3.0 adams549659584/kkfileview:latest
